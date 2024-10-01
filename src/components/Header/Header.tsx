@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { NavLink } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import {Col, Container, Form, Nav, Navbar } from "react-bootstrap";
+import { Col, Container, Form, Nav, Navbar } from "react-bootstrap";
 
 import image from '../../assets/images/logo.jpg';
 
