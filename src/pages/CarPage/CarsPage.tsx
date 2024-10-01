@@ -1,6 +1,6 @@
-import {FC} from 'react';
+import { FC } from 'react';
 
-const CarPage: FC = () => {
+const CarsPage: FC = () => {
     return (
         <div>
             CarPage
@@ -9,5 +9,5 @@ const CarPage: FC = () => {
 };
 
 export {
-    CarPage
+    CarsPage
 };

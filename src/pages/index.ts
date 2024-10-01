@@ -1,3 +1,3 @@
 export * from './AdminPage/AdminPage';
-export * from './CarPage/CarPage';
+export * from './CarPage/CarsPage';
 export * from './NotFoundPage/NotFoundPage';
