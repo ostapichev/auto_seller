@@ -1,10 +1,11 @@
 import { FC, useState } from 'react';
 import { NavLink } from "react-router-dom";
+
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { Col, Container, Form, Nav, Navbar } from "react-bootstrap";
+import { Col, Container, Nav, Navbar } from "react-bootstrap";
 
-import image from '../../assets/images/logo.jpg';
+import logo from '../../assets/images/logo.jpg';
 
 const Header: FC = () => {
     const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
@@ -18,7 +19,7 @@ const Header: FC = () => {
         <Navbar expand="lg" className="bg-body-secondary" fixed='top'>
             <Container fluid>
                 <Col xs={1} md={1}>
-                    <img src={image} alt="logo" className='rounded-circle'/>
+                    <img src={logo} alt="logo" className='rounded-circle' />
                 </Col>
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
@@ -36,23 +37,12 @@ const Header: FC = () => {
                                 <i className="bi bi-gear-fill fs-3"></i>
                             </Button>
                         </NavLink>
-                        <Form.Select size="sm" className='w-25 m-2'>
-                            <option>city select</option>
-                        </Form.Select>
-                        <Form className="d-flex m-2">
-                            <Form.Control
-                                type="search"
-                                placeholder="Search"
-                                className="me-2"
-                                aria-label="Search"
-                            />
-                            <Button variant="outline-primary" className='w-50'>Search</Button>
-                        </Form>
+                        
                     </Nav>
-                    <Button variant="light" className='m-2' onClick={handleShowLoginForm}>
+                    <Button variant="light" className='m-2' onClick={handleShowRegistrationForm}>
                         <i className="bi bi-person-add fs-3"></i>
                     </Button>
-                    <Button variant="light" className='m-2' onClick={handleShowRegistrationForm}>
+                    <Button variant="light" className='m-2' onClick={handleShowLoginForm}>
                         <i className="bi bi-door-closed fs-3"></i>
                     </Button>
                 </Navbar.Collapse>

@@ -1,9 +1,11 @@
 import { FC } from 'react';
 
+import { Admin } from '../../components';
+
 const AdminPage: FC = () => {
     return (
         <div>
-            AdminPage
+            <Admin />
         </div>
     );
 };
