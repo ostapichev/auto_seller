@@ -1,9 +1,10 @@
 import { FC, useEffect } from 'react';
+
 import { Button, Container, Form } from 'react-bootstrap';
 
+import { cityActions } from '../../redux';
 import { City } from '../City/City';
-import { cityActions } from "../../redux";
-import { useAppSelector, useAppDispatch } from "../../hooks";
+import { useAppSelector, useAppDispatch } from '../../hooks';
 
 const Cars: FC = () => {
     const dispatch = useAppDispatch();
@@ -26,12 +27,12 @@ const Cars: FC = () => {
                 </Form.Select>
                 <Form className='d-flex m-2 w-50'>
                     <Form.Control
-                        type="search"
-                        placeholder="Search car"
-                        className="me-2"
-                        aria-label="Search"
+                        type='search'
+                        placeholder='Search car'
+                        className='me-2'
+                        aria-label='Search'
                     />
-                    <Button variant="outline-primary" className='w-50'>Search</Button>
+                    <Button variant='outline-primary' className='w-50'>Search</Button>
                 </Form>
             </Container>
         </Container>

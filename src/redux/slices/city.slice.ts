@@ -45,7 +45,7 @@ const slice = createSlice({
     name: "citySlice",
     initialState,
     reducers: {},
-    extraReducers: (builder) => builder
+    extraReducers: builder => builder
         .addCase(getAll.fulfilled, (state, action) => {
             state.cities = action.payload;
             state.error = null;

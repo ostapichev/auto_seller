@@ -1,9 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import { cityReducer } from './slices';
+import { cityReducer, currencyReducer } from './slices';
 
 const rootReducer = combineReducers({
-    cityReducer
+    cityReducer,
+    currencyReducer
 });
 
 const setupStore = () => configureStore({
