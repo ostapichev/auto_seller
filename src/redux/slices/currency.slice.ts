@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
 
 import { ICurrency, IErrorCurrency } from "../../inteerfaces";
-import { currencyService } from "../../services/currency-course.service";
+import { currencyService } from "../../services";
 
 interface IState {
     currencies: ICurrency[];

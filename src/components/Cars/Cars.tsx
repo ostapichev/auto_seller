@@ -2,13 +2,18 @@ import { FC, useEffect } from 'react';
 
 import { Button, Container, Form } from 'react-bootstrap';
 
-import { cityActions } from '../../redux';
+import { carActions, cityActions } from '../../redux';
 import { City } from '../City/City';
 import { useAppSelector, useAppDispatch } from '../../hooks';
+import { IParams } from '../../inteerfaces';
 
 const Cars: FC = () => {
     const dispatch = useAppDispatch();
     const {cities, trigger, error} = useAppSelector(state => state.cityReducer);
+    useEffect(() => {
+        const params: IParams = {};
+        dispatch(carActions.getAll({ params }))
+    }, [dispatch]);
     useEffect(() => {
         dispatch(cityActions.getAll());
     }, [dispatch, trigger]);

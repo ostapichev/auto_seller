@@ -31,7 +31,6 @@ const Currency: FC<IProps> = ({ currency }) => {
             <h4 className='d-flex align-items-center'>
                 <span className="badge text-bg-secondary">{fixedBuy}&nbsp;&#8211;&nbsp;{fixedSale}</span>
             </h4>
-            
         </Container>
     );
 };
