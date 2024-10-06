@@ -25,7 +25,7 @@ const getAll = createAsyncThunk<ICity[], void>(
         } catch (e) {
             const err = e as AxiosError;
             return rejectWithValue(err.response.data);
-        };
+        }
     }
 );
 
@@ -37,7 +37,7 @@ const addCity = createAsyncThunk<void, {city: ICity}>(
         } catch (e) {
             const err = e as AxiosError;
             return rejectWithValue(err.response.data);
-        };
+        }
     }
 );
 
@@ -62,7 +62,7 @@ const { actions, reducer: cityReducer } = slice;
 const cityActions = {
     ...actions,
     getAll,
-    addCity
+    addCity,
 };
 
 export {

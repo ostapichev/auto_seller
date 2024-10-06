@@ -4,5 +4,5 @@ type IFuncVoid = () => void;
 
 export type {
     ISortingReverse,
-    IFuncVoid
+    IFuncVoid,
 };

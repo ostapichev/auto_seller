@@ -5,7 +5,7 @@ import {carReducer, cityReducer, currencyReducer } from './slices';
 const rootReducer = combineReducers({
     cityReducer,
     currencyReducer,
-    carReducer
+    carReducer,
 });
 
 const setupStore = () => configureStore({
@@ -19,7 +19,7 @@ type AppDispatch = AppStore['dispatch'];
 export type {
     RootState,
     AppStore,
-    AppDispatch
+    AppDispatch,
 };
 
 export {

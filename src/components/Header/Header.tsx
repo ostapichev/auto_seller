@@ -21,12 +21,12 @@ const Header: FC = () => {
         <Navbar expand='lg' className='bg-body-secondary' fixed='top'>
             <Container fluid>
                 <Col xs={1} md={1}>
-                    <img src={logo} alt="logo" className='rounded-circle' />
+                    <img src={ logo } alt="logo" className='rounded-circle' />
                 </Col>
                 <Navbar.Collapse id='navbarScroll'>
                     <Nav
                         className='me-auto my-2 my-lg-0'
-                        style={{maxHeight: '100px'}}
+                        style={{ maxHeight: '100px' }}
                         navbarScroll
                     >
                         <NavLink to='cars'>
@@ -41,15 +41,15 @@ const Header: FC = () => {
                         </NavLink>
                         <Currencies />
                     </Nav>
-                    <Button variant='light' className='m-2' onClick={handleShowRegistrationForm}>
+                    <Button variant='light' className='m-2' onClick={ handleShowRegistrationForm }>
                         <i className='bi bi-person-plus-fill fs-3'></i>
                     </Button>
-                    <Button variant='light' className='m-2' onClick={handleShowLoginForm}>
+                    <Button variant='light' className='m-2' onClick={ handleShowLoginForm }>
                         <i className='bi bi-door-closed-fill fs-3'></i>
                     </Button>
                 </Navbar.Collapse>
             </Container>
-            <Offcanvas show={showRegistrationForm} onHide={closeRegistrationForm} placement='end'>
+            <Offcanvas show={ showRegistrationForm } onHide={ closeRegistrationForm } placement='end'>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Registration</Offcanvas.Title>
                 </Offcanvas.Header>
@@ -58,7 +58,7 @@ const Header: FC = () => {
                     have chosen. Like, text, images, lists, etc.
                 </Offcanvas.Body>
             </Offcanvas>
-            <Offcanvas show={showLoginForm} onHide={closeLoginForm} placement='end'>
+            <Offcanvas show={showLoginForm} onHide={ closeLoginForm } placement='end'>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Login</Offcanvas.Title>
                 </Offcanvas.Header>
@@ -73,4 +73,4 @@ const Header: FC = () => {
 
 export {
     Header
-}
+};

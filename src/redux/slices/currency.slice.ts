@@ -23,7 +23,7 @@ const getAll = createAsyncThunk<ICurrency[], void>(
         } catch (e) {
             const err = e as AxiosError;
             return rejectWithValue(err.response.data);
-        };
+        }
     }
 );
 
@@ -44,10 +44,10 @@ const slice = createSlice({
 const {actions, reducer: currencyReducer} = slice;
 const currencyActions = {
     ...actions,
-    getAll
+    getAll,
 };
 
 export {
     currencyActions,
-    currencyReducer
+    currencyReducer,
 };

@@ -1,12 +1,14 @@
 import { AxiosError } from "axios";
 import { createAsyncThunk, createSlice, isPending, isRejectedWithValue } from "@reduxjs/toolkit";
 
-import { ICar, IErrorCar, IParams, IQuery } from "../../inteerfaces";
+import { IBrand, ICar, IErrorCar, IParams, IQuery } from "../../inteerfaces";
 import { carService } from "../../services";
 
 interface IState {
     cars: ICar[];
+    brands: IBrand[];
     page: number;
+    limit: number;
     total: number;
     cityId: string;
     search: string;
@@ -17,13 +19,15 @@ interface IState {
 
 const initialState: IState = {
     cars: [],
+    brands: [],
     page: 1,
+    limit: 6,
     total: 0,
     cityId: null,
     search: null,
     trigger: false,
     loading: false,
-    error: null
+    error: null,
 };
 
 const getAll = createAsyncThunk<IQuery<ICar[]>, { params: IParams }>(
@@ -35,7 +39,20 @@ const getAll = createAsyncThunk<IQuery<ICar[]>, { params: IParams }>(
         } catch (e) {
             const err = e as AxiosError;
             return rejectWithValue(err.response.data);
-        };
+        }
+    }
+);
+
+const getBrands = createAsyncThunk<IBrand[], void>(
+    'carSlice/getBrands',
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await carService.getBrands();
+            return data;
+        } catch (e) {
+            const err = e as AxiosError;
+            return rejectWithValue(err.response.data);
+        }
     }
 );
 
@@ -54,6 +71,11 @@ const slice = createSlice({
             state.error = null;
             state.loading = false;
         })
+        .addCase(getBrands.fulfilled, (state, action) => {
+            state.brands = action.payload;
+            state.loading = false;
+            state.error = null;
+        })
         .addMatcher(isPending(), state => {
             state.error = null;
             state.loading = true;
@@ -67,10 +89,11 @@ const slice = createSlice({
 const { actions, reducer: carReducer } = slice;
 const carActions = {
     ...actions,
-    getAll
+    getAll,
+    getBrands,
 };
 
 export {
     carActions,
-    carReducer
+    carReducer,
 };

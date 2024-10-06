@@ -7,5 +7,5 @@ const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export {
     useAppDispatch,
-    useAppSelector
+    useAppSelector,
 };

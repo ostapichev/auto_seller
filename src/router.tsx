@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-import { MainLayout } from './layouts';
 import { AdminPage, CarsPage, NotFoundPage } from './pages';
+import { MainLayout } from './layouts';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -20,9 +20,9 @@ const router = createBrowserRouter([
             },
             {
                 path: '*', element: <NotFoundPage />
-            }
+            },
         ]
     }
-])
+]);
 
 export default router;

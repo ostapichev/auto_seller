@@ -7,13 +7,13 @@ interface  IProps {
 }
 
 const City: FC<IProps> = ({ city }) => {
-    const {id, name} = city;
+    const { id, name } = city;
     const firstLetter = (name: string) => {
         return name[0].toUpperCase() + name.slice(1);
     };
     
     return (
-        <option value={id}>{firstLetter(name)}</option>
+        <option value={ id }>{firstLetter(name)}</option>
     );
 };
 
