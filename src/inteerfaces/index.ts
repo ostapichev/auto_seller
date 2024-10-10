@@ -4,5 +4,6 @@ export * from './city.interface';
 export * from './currency.interface';
 export * from './error.interface';
 export * from './model.interface';
+export * from './pagination.interface';
 export * from './params.interface';
 export * from './query.interface';

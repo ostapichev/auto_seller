@@ -6,3 +6,4 @@ export * from './Currency/Currency';
 export * from './Currencies/Currencies';
 export * from './DateFormat/DateFormat'
 export * from './Header/Header';
+export * from './PaginationApp/PaginationApp';

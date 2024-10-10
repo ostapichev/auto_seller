@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, ListGroup, Row } from 'react-bootstrap';
 
 import { CurrencyEnum } from '../../enums';
 import { DateFormat } from '../DateFormat/DateFormat';
@@ -17,20 +17,15 @@ const Car: FC<IProps> = ({ car }) => {
     const { cities } = useAppSelector(state => state.cityReducer);
     const { brands } = useAppSelector(state => state.carReducer);
     const {
-        title, 
-        description, 
-        color, 
+        id,
+        title,
         year,
         brand, 
         model, 
         photo, 
         city,
-        user_id, 
-        start_price, 
         update_price, 
-        currency, 
-        start_currencies_rate, 
-        updated, 
+        currency,
         created
     } = car;
     const getNameCity = (cityId: string): string => {
@@ -67,14 +62,15 @@ const Car: FC<IProps> = ({ car }) => {
                         alt='car-photo'
                     />
                 </Col>
-                <Col xs={4}>
+                <Col xs={5}>
                     <Card.Body>
-                        <Card.Link className='link-offset-2 
-                                              link-offset-3-hover 
-                                              link-underline 
-                                              link-underline-opacity-0 
-                                              link-underline-opacity-75-hover' 
-                                   href="#"
+                        <Card.Link
+                            className='link-offset-2
+                                       link-offset-3-hover
+                                       link-underline
+                                       link-underline-opacity-0
+                                       link-underline-opacity-75-hover'
+                            href="#"
                         >
                             <Card.Title 
                                 className='fs-1' 
@@ -108,11 +104,13 @@ const Car: FC<IProps> = ({ car }) => {
                         >
                             { title }
                         </Card.Title>
-                        <Card.Text>{ description }</Card.Text>
                         <Card.Text>
-                            <span className="badge text-bg-secondary fs-5">{ <DateFormat date={ created } /> }</span>
+                            <span className="badge text-bg-secondary fs-5 mb-4">{ <DateFormat date={ created } /> }</span>
                         </Card.Text>
                     </Card.Body>
+                    <ListGroup>
+                        <ListGroup.Item className='fs-5 text-center w-100'>{ id }</ListGroup.Item>
+                    </ListGroup>
                 </Col>
             </Row>
         </Card>

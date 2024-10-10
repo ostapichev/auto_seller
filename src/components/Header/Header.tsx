@@ -3,9 +3,9 @@ import { NavLink } from "react-router-dom";
 
 import Button from 'react-bootstrap/Button';
 import { Col, Container, Nav, Navbar } from 'react-bootstrap';
+import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import { Currencies } from '../Currencies/Currencies';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import logo from '../../assets/images/logo.jpg';
 

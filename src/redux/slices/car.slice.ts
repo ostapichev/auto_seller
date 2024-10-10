@@ -21,7 +21,7 @@ const initialState: IState = {
     cars: [],
     brands: [],
     page: 1,
-    limit: 6,
+    limit: 2,
     total: 0,
     cityId: null,
     search: null,

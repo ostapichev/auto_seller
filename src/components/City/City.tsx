@@ -13,7 +13,7 @@ const City: FC<IProps> = ({ city }) => {
     };
     
     return (
-        <option value={ id }>{firstLetter(name)}</option>
+        <option value={ id }>{ firstLetter(name) }</option>
     );
 };
 

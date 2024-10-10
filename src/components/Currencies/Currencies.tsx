@@ -2,9 +2,9 @@ import { FC, useEffect } from 'react';
 
 import { Container } from 'react-bootstrap';
 
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { currencyActions } from '../../redux';
 import { Currency } from '../Currency/Currency';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const Currencies: FC = () => {
     const dispatch = useAppDispatch();
