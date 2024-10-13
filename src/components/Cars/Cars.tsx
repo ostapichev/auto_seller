@@ -1,20 +1,21 @@
-import { FC, Fragment, useEffect } from 'react';
-import {useSearchParams} from "react-router-dom";
+import { ChangeEvent, FC, Fragment, useEffect, useRef } from 'react';
+import { useSearchParams } from "react-router-dom";
 
 import { Button, Container, Form } from 'react-bootstrap';
 
 import { carActions, cityActions } from '../../redux';
 import { Car } from '../Car/Car';
 import { City } from '../City/City';
-import { IPagination, IParams } from '../../inteerfaces';
+import {IPagination, IParams, IQueryString} from '../../inteerfaces';
 import { PaginationApp } from "../PaginationApp/PaginationApp";
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
 const Cars: FC = () => {
     const dispatch = useAppDispatch();
     const { cities, trigger, error } = useAppSelector(state => state.cityReducer);
-    const { cars, loading, total, page, limit } = useAppSelector(state => state.carReducer);
+    const { cars, loading, total, page, limit, cityId } = useAppSelector(state => state.carReducer);
     const [query, setQuery] = useSearchParams();
+    const setQueryRef = useRef(setQuery);
     const totalPages = Math.ceil(total / limit);
     const pageChanger = (value: string): void => {
         if (value === '&laquo;' || value === '... ') {
@@ -31,6 +32,9 @@ const Cars: FC = () => {
             setQuery(prev => ({ ...prev, page: +value }));
         }
     };
+    const cityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+        setQuery(prev => ({ ...prev, page: 1, city: event.target.value}));
+    };
     const dataPagination: IPagination = {
         totalPages,
         page,
@@ -39,7 +43,10 @@ const Cars: FC = () => {
         pageChanger,
     };
     useEffect(() => {
-        const params: IParams = { limit, page: +query.get('page') || 1 };
+        setQueryRef.current(prev => ({...prev, page: '1'}));
+    }, []);
+    useEffect(() => {
+        const params: IParams = { limit, page: +query.get('page') || 1, cityId: query.get('city') };
         dispatch(carActions.getAll({ params }))
     }, [dispatch, limit, page, query]);
     useEffect(() => {
@@ -53,8 +60,12 @@ const Cars: FC = () => {
         <Fragment>
             <Container style={{ marginTop: '150px' }}>
                 <Container className='d-flex justify-content-between' fluid>
-                    <Form.Select size='sm' className='w-25 m-2'>
-                        <option>All cities</option>
+                    <Form.Select
+                        size='sm'
+                        className='w-25 m-2'
+                        onChange={ cityChange }
+                    >
+                        <option value=''>All&nbsp;cities</option>
                         {
                             cities.map(city => <City key={ city.id } city={ city } />)
                         }
@@ -72,13 +83,12 @@ const Cars: FC = () => {
                         <Button variant='outline-primary' className='w-50'>Search</Button>
                     </Form>
                 </Container>
-                { !loading && totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
                 <Container>
+                    { !loading && totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
                     { !loading &&
                         cars.map(car => <Car key={ car.id } car={ car } />)
                     }
                 </Container>
-                { !loading && totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
             </Container>
         </Fragment>
     );

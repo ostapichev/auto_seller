@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { Container, Pagination } from "react-bootstrap";
 
+import { IButtonsPaginate } from "../../types";
 import { IPagination } from "../../inteerfaces";
 import { returnPaginationRange } from "../../utils";
 
@@ -17,7 +18,7 @@ const PaginationApp: FC<IProps> = ({ dataPagination }) => {
     const disabledButtonNext = (): boolean => {
         return page === totalPages;
     };
-    let buttons = returnPaginationRange(dataPagination);
+    let buttons: IButtonsPaginate = returnPaginationRange(dataPagination);
 
     return (
         <Container className='d-flex justify-content-center mt-4'>

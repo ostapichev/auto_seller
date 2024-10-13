@@ -1,8 +1,9 @@
 import _ from 'lodash';
 
+import { IButtonsPaginate } from "../types";
 import { IPagination } from "../inteerfaces";
 
-export const returnPaginationRange = (dataPagination: IPagination) => {
+export const returnPaginationRange = (dataPagination: IPagination): IButtonsPaginate => {
     const { page, totalPages, siblings } = dataPagination;
     let totalPageNoInArray = 7 + siblings;
     if (totalPageNoInArray >= totalPages) {

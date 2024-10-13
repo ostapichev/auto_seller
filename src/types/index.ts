@@ -1,2 +1,2 @@
 export * from './res.type';
-export * from './sorting.type';
+export * from './buttons.type';
