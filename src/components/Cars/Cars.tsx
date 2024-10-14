@@ -1,26 +1,25 @@
-import { ChangeEvent, FC, Fragment, useEffect, useRef } from 'react';
-import { useDebounce } from "use-debounce";
-import { useSearchParams } from "react-router-dom";
+import { FC, Fragment, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
+import { useSearchParams } from 'react-router-dom';
 
-import { Button, Container, Form } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
-import { carActions, cityActions } from '../../redux';
+import { carActions } from '../../redux';
 import { Car } from '../Car/Car';
-import { City } from '../City/City';
+import { Cities } from '../Cities/Cities';
 import { IPagination, IParams } from '../../inteerfaces';
-import { PaginationApp } from "../PaginationApp/PaginationApp";
+import { PaginationApp } from '../PaginationApp/PaginationApp';
+import { SearchCar } from '../SearchCar/SearchCar';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
 const Cars: FC = () => {
     const dispatch = useAppDispatch();
-    const { cities, trigger, error } = useAppSelector(state => state.cityReducer);
-    const { cars, loading, total, page, limit, search, cityId } = useAppSelector(state => state.carReducer);
+    const { cars, loading, total, page, limit, cityId } = useAppSelector(state => state.carReducer);
     const [query, setQuery] = useSearchParams();
-    const setQueryRef = useRef(setQuery);
     const totalPages = Math.ceil(total / limit);
     const [debounced] = useDebounce<IParams>({
         search: query.get('search'),
-        cityId,
+        cityId: query.get('city'),
         limit,
         page: +query.get('page') || 1,
     }, 500);
@@ -47,12 +46,16 @@ const Cars: FC = () => {
         limit,
         pageChanger,
     };
-    const cityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-        dispatch(carActions.setCity(event.target.value));
-    };
     useEffect(() => {
-        setQueryRef.current(prev => ({ ...prev, page: page.toString() }));
-    }, [page, query]);
+        const queryString: string[] = [];
+        queryString.push(`page=${encodeURIComponent(page)}`);
+        if (cityId) {
+            queryString.push(`city=${encodeURIComponent(cityId)}`);
+        }
+        if (queryString.length) {
+            setQuery(`?${queryString.join('&')}`);
+        }
+    }, [page, setQuery, cityId]);
     useEffect(() => {
         dispatch(carActions.setPage(+query.get('page')));
     }, [dispatch, query]);
@@ -60,40 +63,17 @@ const Cars: FC = () => {
         const params: IParams = JSON.parse(debouncedString);
         console.log(debouncedString);
         dispatch(carActions.getAll({ params }));
-    }, [dispatch, debouncedString, cityId]);
+    }, [dispatch, debouncedString]);
     useEffect(() => {
         dispatch(carActions.getBrands());
     }, [dispatch]);
-    useEffect(() => {
-        dispatch(cityActions.getAll());
-    }, [dispatch, trigger]);
     
     return (
         <Fragment>
             <Container style={{ marginTop: '150px' }}>
                 <Container className='d-flex justify-content-between' fluid>
-                    <Form.Select
-                        size='sm'
-                        className='w-25 m-2'
-                        onChange={ cityChange }
-                    >
-                        <option value=''>All cities</option>
-                        {
-                            cities.map(city => <City key={ city.id } city={ city } />)
-                        }
-                        {
-                            error && <div className="alert alert-danger">{ error?.name }</div>
-                        }
-                    </Form.Select>
-                    <Form className='d-flex m-2 w-50'>
-                        <Form.Control
-                            type='search'
-                            placeholder='Search car'
-                            className='me-2'
-                            aria-label='Search'
-                        />
-                        <Button variant='outline-primary' className='w-50'>Search</Button>
-                    </Form>
+                    <Cities />
+                    <SearchCar />
                 </Container>
                 { !loading && totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
                 <Container>
