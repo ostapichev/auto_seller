@@ -16,6 +16,7 @@ interface IProps {
 const Car: FC<IProps> = ({ car }) => {
     const { cities } = useAppSelector(state => state.cityReducer);
     const { brands } = useAppSelector(state => state.carReducer);
+    const { currencies } = useAppSelector(state => state.currencyReducer);
     const {
         id,
         title,
@@ -52,7 +53,7 @@ const Car: FC<IProps> = ({ car }) => {
     const brandName = getBrandName(brand, model);
     
     return (
-        <Card border='dark' className="w-100 mt-4">
+        <Card border='dark' className="w-100 mb-4">
             <Row>
                 <Col xs={6}>
                     <Card.Img
@@ -92,7 +93,16 @@ const Car: FC<IProps> = ({ car }) => {
                                 currency === CurrencyEnum.EUR &&
                                 <i className='bi bi-currency-euro fs-2'></i>
                             }
-                            &nbsp;{ update_price }
+                            &nbsp;{ update_price }&nbsp;
+                            {
+                                currency !== CurrencyEnum.UAH &&
+                                <small className="text-muted fs-3">&mdash;&nbsp;
+                                    {
+                                        currencies.map(value =>
+                                            value.ccy === currency && (value.sale * update_price).toFixed(2))
+                                    }&nbsp;{ CurrencyEnum.UAH }
+                                </small>
+                            }
                         </Card.Text>
                         <Card.Text className='d-flex align-items-center fs-4'>
                             <i className="bi bi-geo-alt-fill"></i>

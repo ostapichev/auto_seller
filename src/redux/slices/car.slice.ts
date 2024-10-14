@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { createAsyncThunk, createSlice, isPending, isRejectedWithValue } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue} from "@reduxjs/toolkit";
 
 import { IBrand, ICar, IErrorCar, IParams, IQuery } from "../../inteerfaces";
 import { carService } from "../../services";
@@ -7,6 +7,7 @@ import { carService } from "../../services";
 interface IState {
     cars: ICar[];
     brands: IBrand[];
+    params: IParams;
     page: number;
     limit: number;
     total: number;
@@ -20,6 +21,7 @@ interface IState {
 const initialState: IState = {
     cars: [],
     brands: [],
+    params: {},
     page: 1,
     limit: 2,
     total: 0,
@@ -34,6 +36,7 @@ const getAll = createAsyncThunk<IQuery<ICar[]>, { params: IParams }>(
     'carSlice/getAll',
     async ({ params }, { rejectWithValue }) => {
         try {
+            console.log(params);
             const { data } = await carService.getCars(params);
             return data;
         } catch (e) {
@@ -59,7 +62,15 @@ const getBrands = createAsyncThunk<IBrand[], void>(
 const slice = createSlice({
     name: "carSlice",
     initialState,
-    reducers: {},
+    reducers: {
+        setPage: (state, action) => {
+            state.page = action.payload;
+        },
+        setCity: (state, action) => {
+            state.cityId = action.payload;
+            state.page = 1;
+        }
+    },
     extraReducers: builder => builder
         .addCase(getAll.fulfilled, (state, action) => {
             const {data, cityId, page, search, total} = action.payload;
@@ -68,17 +79,17 @@ const slice = createSlice({
             state.cityId = cityId;
             state.search = search;
             state.total = total;
-            state.error = null;
-            state.loading = false;
         })
         .addCase(getBrands.fulfilled, (state, action) => {
             state.brands = action.payload;
-            state.loading = false;
-            state.error = null;
         })
         .addMatcher(isPending(), state => {
             state.error = null;
             state.loading = true;
+        })
+        .addMatcher(isFulfilled(), state => {
+            state.loading = false;
+            state.error = null;
         })
         .addMatcher(isRejectedWithValue(), (state, action) => {
             state.error = action.payload;
