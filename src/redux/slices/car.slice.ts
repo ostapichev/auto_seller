@@ -66,10 +66,20 @@ const slice = createSlice({
         setPage: (state, action) => {
             state.page = action.payload;
         },
+        setLimitDec: (state) => {
+            state.limit = state.limit - 2;
+        },
+        setLimitInc: (state) => {
+            state.limit = state.limit + 2;
+        },
         setCity: (state, action) => {
             state.cityId = action.payload;
             state.page = 1;
-        }
+        },
+        setSearch: (state, action) => {
+            state.search = action.payload;
+            state.page = 1;
+        },
     },
     extraReducers: builder => builder
         .addCase(getAll.fulfilled, (state, action) => {

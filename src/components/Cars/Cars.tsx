@@ -2,19 +2,23 @@ import { FC, Fragment, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import { useSearchParams } from 'react-router-dom';
 
+import Button from "react-bootstrap/Button";
 import { Container } from 'react-bootstrap';
 
 import { carActions } from '../../redux';
 import { Car } from '../Car/Car';
 import { Cities } from '../Cities/Cities';
+import { IFuncVoid } from '../../types';
 import { IPagination, IParams } from '../../inteerfaces';
 import { PaginationApp } from '../PaginationApp/PaginationApp';
 import { SearchCar } from '../SearchCar/SearchCar';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
+
 const Cars: FC = () => {
     const dispatch = useAppDispatch();
     const { cars, loading, total, page, limit, cityId } = useAppSelector(state => state.carReducer);
+    const { search } = useAppSelector(state => state.carReducer);
     const [query, setQuery] = useSearchParams();
     const totalPages = Math.ceil(total / limit);
     const [debounced] = useDebounce<IParams>({
@@ -46,22 +50,30 @@ const Cars: FC = () => {
         limit,
         pageChanger,
     };
+    const decLimit: IFuncVoid = (): void => {
+        dispatch(carActions.setLimitDec());
+    };
+    const incLimit: IFuncVoid = (): void => {
+        dispatch(carActions.setLimitInc());
+    };
     useEffect(() => {
         const queryString: string[] = [];
         queryString.push(`page=${encodeURIComponent(page)}`);
         if (cityId) {
             queryString.push(`city=${encodeURIComponent(cityId)}`);
         }
+        if (search) {
+            queryString.push(`search=${encodeURIComponent(search)}`);
+        }
         if (queryString.length) {
             setQuery(`?${queryString.join('&')}`);
         }
-    }, [page, setQuery, cityId]);
+    }, [page, setQuery, cityId, search]);
     useEffect(() => {
         dispatch(carActions.setPage(+query.get('page')));
     }, [dispatch, query]);
     useEffect(() => {
         const params: IParams = JSON.parse(debouncedString);
-        console.log(debouncedString);
         dispatch(carActions.getAll({ params }));
     }, [dispatch, debouncedString]);
     useEffect(() => {
@@ -79,6 +91,14 @@ const Cars: FC = () => {
                 <Container>
                     { !loading &&
                         cars.map(car => <Car key={ car.id } car={ car } />)
+                    }
+                </Container>
+                <Container className='d-flex justify-content-end' fluid>
+                    {
+                        limit > 2 && <Button onClick={decLimit} className='m-3' variant="primary" size="lg">Hide</Button>
+                    }
+                    {
+                        limit < 10 && <Button onClick={incLimit} className='m-3' variant="primary" size="lg">More</Button>
                     }
                 </Container>
             </Container>
