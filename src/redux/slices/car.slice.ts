@@ -36,7 +36,6 @@ const getAll = createAsyncThunk<IQuery<ICar[]>, { params: IParams }>(
     'carSlice/getAll',
     async ({ params }, { rejectWithValue }) => {
         try {
-            console.log(params);
             const { data } = await carService.getCars(params);
             return data;
         } catch (e) {

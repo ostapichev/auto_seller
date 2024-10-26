@@ -1,6 +1,7 @@
 export * from './Admin/Admin';
 export * from './Car/Car';
 export * from './Cars/Cars';
+export * from './Chat/Chat';
 export * from './Cities/Cities';
 export * from './City/City';
 export * from './Currency/Currency';
