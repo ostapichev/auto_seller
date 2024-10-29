@@ -1,20 +1,21 @@
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
-import { socketService } from "../../services";
 import { IChatMessage } from "../../inteerfaces";
+import { IFuncVoid } from "../../types";
+import { socketService } from "../../services";
 
 const Chat: FC = () => {
     const [socket, setSocket] = useState<typeof Socket | null>(null);
-    const [messages, setMessages] = useState< IChatMessage[] >([]);
+    const [messages, setMessages] = useState<IChatMessage[]>([]);
     const [input, setInput] = useState<string>('');
     const [room, setRoom] = useState<string>('');
-    const joinRoom = () => {
+    const joinRoom: IFuncVoid = () => {
         if (socket && room) {
             socket.emit('joinRoom', room);
         }
     };
-    const sendMessage = () => {
+    const sendMessage:IFuncVoid = () => {
         if (socket && input && room) {
             socket.emit('message', { room, message: input });
             setInput('');
