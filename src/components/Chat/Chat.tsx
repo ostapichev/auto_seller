@@ -1,33 +1,33 @@
 import { FC, useEffect, useState } from 'react';
-import io, { Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 
-interface ChatMessage {
-    id: string;
-    text: string;
-}
+import { socketService } from "../../services";
+import { IChatMessage } from "../../inteerfaces";
 
 const Chat: FC = () => {
     const [socket, setSocket] = useState<typeof Socket | null>(null);
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [messages, setMessages] = useState< IChatMessage[] >([]);
     const [input, setInput] = useState<string>('');
+    const [room, setRoom] = useState<string>('');
+    const joinRoom = () => {
+        if (socket && room) {
+            socket.emit('joinRoom', room);
+        }
+    };
     const sendMessage = () => {
-        if (socket && input) {
-            socket.emit('message', input); // Отправка сообщения на сервер
-            setInput(''); // Очистка поля ввода после отправки
+        if (socket && input && room) {
+            socket.emit('message', { room, message: input });
+            setInput('');
         }
     };
     useEffect(() => {
-        const newSocket = io('http://localhost:3500', {
-            path: '/socket/message',
-            transports: ['websocket'],
-        });
+        const newSocket: typeof Socket = socketService.socketConnect();
         setSocket(newSocket);
-        newSocket.on('message', (message: string) => {
-            const newMessage: ChatMessage = {
-                id: new Date().toISOString(),
-                text: message,
-            };
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+        newSocket.on('joinedRoom', (room: string) => {
+            console.log(`Joined room: ${room}`);
+        });
+        newSocket.on('message', (data: IChatMessage) => {
+            setMessages((prevMessages) => [...prevMessages, data]);
         });
         return () => {
             newSocket.close();
@@ -37,9 +37,20 @@ const Chat: FC = () => {
     return (
         <div>
             <h2>WebSocket Chat</h2>
+            <div>
+                <input
+                    type="text"
+                    value={room}
+                    onChange={(e) => setRoom(e.target.value)}
+                    placeholder="Enter room name"
+                />
+                <button onClick={joinRoom}>Join Room</button>
+            </div>
             <div style={{ border: '1px solid #ccc', padding: '10px', height: '300px', overflowY: 'scroll' }}>
-                {messages.map((msg: ChatMessage, index) => (
-                    <div key={index}>{msg.text}</div>
+                {messages.map((msg, index) => (
+                    <div key={index}>
+                        <strong>{msg.sender}</strong>: {msg.message}
+                    </div>
                 ))}
             </div>
             <input

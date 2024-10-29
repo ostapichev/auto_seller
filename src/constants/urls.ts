@@ -16,7 +16,7 @@ const urls = {
         currency_course: `${currency_course}`,
     },
     socketAPI: {
-        socket: `${baseURL}${socket}`,
+        socket: `${socket}`,
     }
 };
 

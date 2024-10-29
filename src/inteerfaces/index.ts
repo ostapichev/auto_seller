@@ -1,6 +1,7 @@
 export * from './brand.interface';
 export * from './car.interface';
 export * from './city.interface';
+export * from './chat.interface';
 export * from './currency.interface';
 export * from './error.interface';
 export * from './model.interface';
