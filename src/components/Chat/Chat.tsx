@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
-import { IChatMessage } from "../../inteerfaces";
-import { IFuncVoid } from "../../types";
-import { socketService } from "../../services";
+import { IChatMessage } from '../../inteerfaces';
+import { IFuncVoid } from '../../types';
+import { socketService } from '../../services';
 
 const Chat: FC = () => {
     const [socket, setSocket] = useState<typeof Socket | null>(null);
@@ -41,26 +41,28 @@ const Chat: FC = () => {
             <div>
                 <input
                     type="text"
-                    value={room}
+                    value={ room }
                     onChange={(e) => setRoom(e.target.value)}
                     placeholder="Enter room name"
                 />
-                <button onClick={joinRoom}>Join Room</button>
+                <button onClick={ joinRoom }>Join Room</button>
             </div>
             <div style={{ border: '1px solid #ccc', padding: '10px', height: '300px', overflowY: 'scroll' }}>
-                {messages.map((msg, index) => (
-                    <div key={index}>
-                        <strong>{msg.sender}</strong>: {msg.message}
-                    </div>
-                ))}
+                {
+                    messages.map((msg, index) => (
+                        <div key={ index }>
+                            <strong>{ msg.sender }</strong>: { msg.message }
+                        </div>
+                    ))
+                }
             </div>
             <input
                 type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
+                value={ input }
+                onChange={ (e) => setInput(e.target.value) }
                 placeholder="Type your message..."
             />
-            <button onClick={sendMessage}>Send</button>
+            <button onClick={ sendMessage }>Send</button>
         </div>
     );
 };

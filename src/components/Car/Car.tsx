@@ -5,7 +5,7 @@ import { Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { CurrencyEnum } from '../../enums';
 import { DateFormat } from '../DateFormat/DateFormat';
 import { IBrand, ICar, ICity, IModel } from '../../inteerfaces';
-import { useAppSelector } from "../../hooks";
+import { useAppSelector } from '../../hooks';
 
 import { empty, uah_icon } from '../../assets';
 
@@ -49,8 +49,9 @@ const Car: FC<IProps> = ({ car }) => {
         }
         return ['Error brand name', 'Error model name'];
     };
-    const cityName = getNameCity(city);
-    const brandName = getBrandName(brand, model);
+    const titleFormat: string = title.length > 35 ? `${title.slice(0, 30) + '...'}` : title;
+    const cityName: string = getNameCity(city);
+    const brandName: string[] = getBrandName(brand, model);
     
     return (
         <Card border='dark' className="w-100 mb-4">
@@ -112,7 +113,7 @@ const Car: FC<IProps> = ({ car }) => {
                             className='fs-3'
                             style={{ fontFamily: 'Helvetica' }}
                         >
-                            { title }
+                            { titleFormat }
                         </Card.Title>
                         <Card.Text>
                             <span className="badge text-bg-secondary fs-5 mb-4">{ <DateFormat date={ created } /> }</span>

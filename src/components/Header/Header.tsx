@@ -8,14 +8,15 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Currencies } from '../Currencies/Currencies';
 
 import logo from '../../assets/images/logo.jpg';
+import {IFuncVoid} from "../../types";
 
 const Header: FC = () => {
     const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
     const [showRegistrationForm, setShowRegistrationForm] = useState<boolean>(false);
-    const closeLoginForm = (): void => setShowLoginForm(false);
-    const handleShowLoginForm = (): void => setShowLoginForm(true);
-    const closeRegistrationForm = (): void => setShowRegistrationForm(false);
-    const handleShowRegistrationForm = (): void => setShowRegistrationForm(true);
+    const closeLoginForm: IFuncVoid = (): void => setShowLoginForm(false);
+    const handleShowLoginForm: IFuncVoid = (): void => setShowLoginForm(true);
+    const closeRegistrationForm: IFuncVoid = (): void => setShowRegistrationForm(false);
+    const handleShowRegistrationForm: IFuncVoid = (): void => setShowRegistrationForm(true);
 
     return (
         <Navbar expand='lg' className='bg-body-secondary' fixed='top'>

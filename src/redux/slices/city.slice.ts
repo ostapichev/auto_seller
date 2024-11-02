@@ -1,8 +1,8 @@
-import { AxiosError } from "axios";
-import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
+import { AxiosError } from 'axios';
+import { createAsyncThunk, createSlice, isRejectedWithValue } from '@reduxjs/toolkit';
 
-import { cityService } from "../../services";
-import { ICity, IErrorCity } from "../../inteerfaces";
+import { cityService } from '../../services';
+import { ICity, IErrorCity } from '../../inteerfaces';
 
 interface IState {
     cities: ICity[];
@@ -42,7 +42,7 @@ const addCity = createAsyncThunk<void, {city: ICity}>(
 );
 
 const slice = createSlice({
-    name: "citySlice",
+    name: 'citySlice',
     initialState,
     reducers: {},
     extraReducers: builder => builder

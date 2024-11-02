@@ -1,8 +1,8 @@
-import { AxiosError } from "axios";
-import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
+import { AxiosError } from 'axios';
+import { createAsyncThunk, createSlice, isRejectedWithValue } from '@reduxjs/toolkit';
 
-import { ICurrency, IErrorCurrency } from "../../inteerfaces";
-import { currencyService } from "../../services";
+import { ICurrency, IErrorCurrency } from '../../inteerfaces';
+import { currencyService } from '../../services';
 
 interface IState {
     currencies: ICurrency[];
@@ -28,7 +28,7 @@ const getAll = createAsyncThunk<ICurrency[], void>(
 );
 
 const slice = createSlice({
-    name: "currencySlice",
+    name: 'currencySlice',
     initialState,
     reducers: {},
     extraReducers: builder => builder
@@ -41,7 +41,7 @@ const slice = createSlice({
         })
 });
 
-const {actions, reducer: currencyReducer} = slice;
+const { actions, reducer: currencyReducer } = slice;
 const currencyActions = {
     ...actions,
     getAll,

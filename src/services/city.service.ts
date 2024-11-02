@@ -1,8 +1,8 @@
-import { axiosService } from "./axios.service";
+import { axiosService } from './axios.service';
 
-import { ICity}  from "../inteerfaces";
-import { IRes } from "../types";
-import { urls } from "../constants";
+import { ICity}  from '../inteerfaces';
+import { IRes } from '../types';
+import { urls } from '../constants';
 
 class CityService {
     public getCities(): IRes<ICity[]> {

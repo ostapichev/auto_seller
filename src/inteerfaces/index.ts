@@ -7,4 +7,5 @@ export * from './error.interface';
 export * from './model.interface';
 export * from './pagination.interface';
 export * from './params.interface';
+export * from './search-car.interface';
 export * from './query.interface';

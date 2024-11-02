@@ -1,10 +1,10 @@
 import { ChangeEvent, FC, useEffect } from 'react';
 
-import { Form } from "react-bootstrap";
+import { Form } from 'react-bootstrap';
 
-import { City } from "../City/City";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { carActions, cityActions } from "../../redux";
+import { City } from '../City/City';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { carActions, cityActions } from '../../redux';
 
 const Cities: FC = () => {
     const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ const Cities: FC = () => {
                 cities.map(city => <City key={ city.id } city={ city } />)
             }
             {
-                error && <div className="alert alert-danger">{ error?.name }</div>
+                error && <div className='alert alert-danger'>{ error?.name }</div>
             }
         </Form.Select>
     );

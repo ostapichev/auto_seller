@@ -1,9 +1,9 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from 'axios';
 
-import { axiosService } from "./axios.service";
-import { IBrand, ICar, IParams } from "../inteerfaces";
-import { IRes, IResQuery } from "../types";
-import { urls } from "../constants";
+import { axiosService } from './axios.service';
+import { IBrand, ICar, IParams } from '../inteerfaces';
+import { IRes, IResQuery } from '../types';
+import { urls } from '../constants';
 
 class CarService {
     public getCars(params: IParams): IResQuery<ICar[]> {

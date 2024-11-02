@@ -1,4 +1,4 @@
-import { IModel } from "./model.interface";
+import { IModel } from './model.interface';
 
 export interface IBrand {
     id: string;

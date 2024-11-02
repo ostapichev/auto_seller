@@ -1,5 +1,5 @@
-import { CurrencyEnum } from "../enums";
-import { ICurrency } from "./currency.interface";
+import { CurrencyEnum } from '../enums';
+import { ICurrency } from './currency.interface';
 
 export interface ICar {
     id: string;

@@ -1,8 +1,8 @@
-import { FC, Fragment, useEffect } from 'react';
+import { FC, Fragment, useEffect, useRef } from 'react';
 import { useDebounce } from 'use-debounce';
 import { useSearchParams } from 'react-router-dom';
 
-import Button from "react-bootstrap/Button";
+import Button from 'react-bootstrap/Button';
 import { Container } from 'react-bootstrap';
 
 import { carActions } from '../../redux';
@@ -14,20 +14,29 @@ import { PaginationApp } from '../PaginationApp/PaginationApp';
 import { SearchCar } from '../SearchCar/SearchCar';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
-
 const Cars: FC = () => {
     const dispatch = useAppDispatch();
-    const { cars, loading, total, page, limit, cityId } = useAppSelector(state => state.carReducer);
-    const { search } = useAppSelector(state => state.carReducer);
+    const {
+        cars,
+        loading,
+        total,
+        page,
+        limit,
+        search,
+        showCars,
+        cityId,
+    } = useAppSelector(state => state.carReducer);
     const [query, setQuery] = useSearchParams();
     const totalPages = Math.ceil(total / limit);
+    const bottomRef = useRef(null);
     const [debounced] = useDebounce<IParams>({
         search: query.get('search'),
         cityId: query.get('city'),
-        limit,
         page: +query.get('page') || 1,
+        limit
     }, 500);
     const debouncedString = JSON.stringify(debounced);
+    console.log(debouncedString);
     const pageChanger = (value: string): void => {
         if (value === '&laquo;' || value === '... ') {
             setQuery(prev => ({ ...prev, page: 1 }));
@@ -52,9 +61,15 @@ const Cars: FC = () => {
     };
     const decLimit: IFuncVoid = (): void => {
         dispatch(carActions.setLimitDec());
+        setTimeout(() => {
+            bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 800);
     };
     const incLimit: IFuncVoid = (): void => {
         dispatch(carActions.setLimitInc());
+        setTimeout(() => {
+            bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 800);
     };
     useEffect(() => {
         const queryString: string[] = [];
@@ -84,24 +99,29 @@ const Cars: FC = () => {
         <Fragment>
             <Container style={{ marginTop: '150px' }}>
                 <Container className='d-flex justify-content-between' fluid>
-                    <Cities />
-                    <SearchCar />
+                    <Cities/>
+                    <SearchCar/>
                 </Container>
-                { !loading && totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
+                {
+                    !loading && totalPages > 1 && <PaginationApp dataPagination={ dataPagination } />
+                }
                 <Container>
-                    { !loading &&
-                        cars.map(car => <Car key={ car.id } car={ car } />)
+                    {
+                        !loading && cars.map(car => <Car key={ car.id } car={ car }/>)
                     }
                 </Container>
                 <Container className='d-flex justify-content-end' fluid>
                     {
-                        limit > 2 && <Button onClick={decLimit} className='m-3' variant="primary" size="lg">Hide</Button>
+                        limit > showCars &&
+                        <Button onClick={ decLimit } className='m-3' variant="primary" size="lg">Hide</Button>
                     }
                     {
-                        limit < 10 && <Button onClick={incLimit} className='m-3' variant="primary" size="lg">More</Button>
+                        limit < total - showCars &&
+                        <Button onClick={ incLimit } className='m-3' variant="primary" size="lg">More</Button>
                     }
                 </Container>
             </Container>
+            <div ref={ bottomRef }></div>
         </Fragment>
     );
 };

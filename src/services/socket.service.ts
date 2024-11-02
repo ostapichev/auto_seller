@@ -1,5 +1,5 @@
-import {baseURL, urls} from "../constants";
-import io, {Socket} from "socket.io-client";
+import {baseURL, urls} from '../constants';
+import io, {Socket} from 'socket.io-client';
 
 class SocketService {
     public socketConnect(): typeof Socket {

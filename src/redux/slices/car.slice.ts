@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import {createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue } from "@reduxjs/toolkit";
 
 import { IBrand, ICar, IErrorCar, IParams, IQuery } from "../../inteerfaces";
 import { carService } from "../../services";
@@ -8,9 +8,11 @@ interface IState {
     cars: ICar[];
     brands: IBrand[];
     params: IParams;
+    data: number,
     page: number;
     limit: number;
     total: number;
+    showCars: number;
     cityId: string;
     search: string;
     trigger: boolean;
@@ -22,9 +24,11 @@ const initialState: IState = {
     cars: [],
     brands: [],
     params: {},
+    data: 0,
     page: 1,
     limit: 2,
     total: 0,
+    showCars: 2,
     cityId: null,
     search: null,
     trigger: false,
@@ -66,10 +70,10 @@ const slice = createSlice({
             state.page = action.payload;
         },
         setLimitDec: (state) => {
-            state.limit = state.limit - 2;
+            state.limit = state.limit - state.showCars;
         },
         setLimitInc: (state) => {
-            state.limit = state.limit + 2;
+            state.limit = state.limit + state.showCars;
         },
         setCity: (state, action) => {
             state.cityId = action.payload;
@@ -82,7 +86,7 @@ const slice = createSlice({
     },
     extraReducers: builder => builder
         .addCase(getAll.fulfilled, (state, action) => {
-            const {data, cityId, page, search, total} = action.payload;
+            const { data, cityId, page, search, total } = action.payload;
             state.cars = data;
             state.page = page;
             state.cityId = cityId;

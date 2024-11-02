@@ -8,7 +8,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const Currencies: FC = () => {
     const dispatch = useAppDispatch();
-    const {currencies, error} = useAppSelector(state => state.currencyReducer);
+    const { currencies, error } = useAppSelector(state => state.currencyReducer);
+    const currenciesFormat = currencies.slice(-2);
     useEffect(() => {
         dispatch(currencyActions.getAll());
     }, [dispatch]);
@@ -16,7 +17,7 @@ const Currencies: FC = () => {
     return (
         <Container className='d-flex flex-column justify-content-center align-items-center'>
             {
-                currencies.map((currency) => <Currency key={ currency.id } currency={ currency } />)
+                currenciesFormat.map((currency) => <Currency key={ currency.id } currency={ currency } />)
             }
             { error?.ccy && <div className='alert alert-danger'>{ error?.ccy }</div> }
             { error?.base_ccy && <div className='alert alert-danger'>{ error?.base_ccy }</div> }

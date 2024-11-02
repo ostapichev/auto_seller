@@ -1,4 +1,4 @@
-import { CurrencyEnum } from "../enums";
+import { CurrencyEnum } from '../enums';
 
 export interface ICurrency {
     id: string;
