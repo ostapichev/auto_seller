@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { Container, Pagination } from 'react-bootstrap';
 
-import { IPagination } from '../../inteerfaces';
+import { IPagination } from '../../interfaces';
 import { IPaginateButtons } from '../../types';
 import { returnPaginationRange } from '../../utils';
 

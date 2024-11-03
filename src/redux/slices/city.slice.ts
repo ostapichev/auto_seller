@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { createAsyncThunk, createSlice, isRejectedWithValue } from '@reduxjs/toolkit';
 
 import { cityService } from '../../services';
-import { ICity, IErrorCity } from '../../inteerfaces';
+import { ICity, IErrorCity } from '../../interfaces';
 
 interface IState {
     cities: ICity[];

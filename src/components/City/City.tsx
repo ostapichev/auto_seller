@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { ICity } from '../../inteerfaces';
+import { ICity } from '../../interfaces';
 
 interface  IProps {
     city: ICity;

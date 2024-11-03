@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
-import { IChatMessage } from '../../inteerfaces';
+import { IChatMessage } from '../../interfaces';
 import { IFuncVoid } from '../../types';
 import { socketService } from '../../services';
 

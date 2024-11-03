@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { axiosService } from './axios.service';
-import { IBrand, ICar, IParams } from '../inteerfaces';
+import { IBrand, ICar, IParams } from '../interfaces';
 import { IRes, IResQuery } from '../types';
 import { urls } from '../constants';
 

@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { createAsyncThunk, createSlice, isRejectedWithValue } from '@reduxjs/toolkit';
 
-import { ICurrency, IErrorCurrency } from '../../inteerfaces';
+import { ICurrency, IErrorCurrency } from '../../interfaces';
 import { currencyService } from '../../services';
 
 interface IState {

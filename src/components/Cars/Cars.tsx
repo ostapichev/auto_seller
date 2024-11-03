@@ -1,4 +1,4 @@
-import { FC, Fragment, useEffect, useRef } from 'react';
+import { FC, Fragment, useEffect, useRef, useCallback } from 'react';
 import { useDebounce } from 'use-debounce';
 import { useSearchParams } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { carActions } from '../../redux';
 import { Car } from '../Car/Car';
 import { Cities } from '../Cities/Cities';
 import { IFuncVoid } from '../../types';
-import { IPagination, IParams } from '../../inteerfaces';
+import { IPagination, IParams } from '../../interfaces';
 import { PaginationApp } from '../PaginationApp/PaginationApp';
 import { SearchCar } from '../SearchCar/SearchCar';
 import { useAppSelector, useAppDispatch } from '../../hooks';
@@ -18,7 +18,6 @@ const Cars: FC = () => {
     const dispatch = useAppDispatch();
     const {
         cars,
-        loading,
         total,
         page,
         limit,
@@ -36,22 +35,20 @@ const Cars: FC = () => {
         limit
     }, 500);
     const debouncedString = JSON.stringify(debounced);
-    console.log(debouncedString);
-    const pageChanger = (value: string): void => {
-        if (value === '&laquo;' || value === '... ') {
-            setQuery(prev => ({ ...prev, page: 1 }));
-        } else if (value === '&lsaquo;') {
-            if (page !== 1) {
-                setQuery(prev => ({ ...prev, page: +prev.get('page') - 1 }));
-            }
-        } else if (value === '&rsaquo;') {
-            setQuery(prev => ({ ...prev, page: +prev.get('page') + 1 }));
-        } else if (value === '&raquo;' || value === ' ...') {
-            setQuery(prev => ({ ...prev, page: totalPages }));
-        } else {
-            setQuery(prev => ({ ...prev, page: +value }));
-        }
-    };
+    const pageChanger = useCallback((value: string): void => {
+        setQuery((prev) => {
+            const newPage = value === '&raquo;' || value === ' ...'
+                ? totalPages
+                : value === '&laquo;' || value === '... '
+                    ? 1
+                    : value === '&lsaquo;'
+                        ? Math.max(+prev.get('page') - 1, 1)
+                        : value === '&rsaquo;'
+                            ? Math.min(+prev.get('page') + 1, totalPages)
+                            : +value;
+            return { ...prev, page: newPage.toString() };
+        });
+    }, [setQuery, totalPages]);
     const dataPagination: IPagination = {
         totalPages,
         page,
@@ -59,6 +56,15 @@ const Cars: FC = () => {
         limit,
         pageChanger,
     };
+    const changeLimit = useCallback((action: 'increase' | 'decrease'): void => {
+            dispatch(action === 'increase' ? carActions.setLimitInc() : carActions.setLimitDec());
+            if (page >= totalPages) {
+                dispatch(carActions.setPage(totalPages));
+            }
+            setTimeout(() => {
+                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, 600);
+        }, [dispatch, page, totalPages]);
     const decLimit: IFuncVoid = (): void => {
         dispatch(carActions.setLimitDec());
         setTimeout(() => {
@@ -67,6 +73,10 @@ const Cars: FC = () => {
     };
     const incLimit: IFuncVoid = (): void => {
         dispatch(carActions.setLimitInc());
+        console.log('total pages:', totalPages);
+        console.log('page:', page);
+        console.log((page >= totalPages - 1));
+        if (page >= totalPages) dispatch(carActions.setPage(totalPages));
         setTimeout(() => {
             bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
         }, 800);
@@ -74,15 +84,9 @@ const Cars: FC = () => {
     useEffect(() => {
         const queryString: string[] = [];
         queryString.push(`page=${encodeURIComponent(page)}`);
-        if (cityId) {
-            queryString.push(`city=${encodeURIComponent(cityId)}`);
-        }
-        if (search) {
-            queryString.push(`search=${encodeURIComponent(search)}`);
-        }
-        if (queryString.length) {
-            setQuery(`?${queryString.join('&')}`);
-        }
+        if (cityId) queryString.push(`city=${encodeURIComponent(cityId)}`);
+        if (search) queryString.push(`search=${encodeURIComponent(search)}`);
+        if (queryString.length) setQuery(`?${queryString.join('&')}`);
     }, [page, setQuery, cityId, search]);
     useEffect(() => {
         dispatch(carActions.setPage(+query.get('page')));
@@ -94,7 +98,7 @@ const Cars: FC = () => {
     useEffect(() => {
         dispatch(carActions.getBrands());
     }, [dispatch]);
-    
+
     return (
         <Fragment>
             <Container style={{ marginTop: '150px' }}>
@@ -102,24 +106,27 @@ const Cars: FC = () => {
                     <Cities/>
                     <SearchCar/>
                 </Container>
-                {
-                    !loading && totalPages > 1 && <PaginationApp dataPagination={ dataPagination } />
-                }
+                { totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
                 <Container>
                     {
-                        !loading && cars.map(car => <Car key={ car.id } car={ car }/>)
+                        cars.map((car) => <Car key={ car.id } car={ car } />)
                     }
                 </Container>
                 <Container className='d-flex justify-content-end' fluid>
                     {
                         limit > showCars &&
-                        <Button onClick={ decLimit } className='m-3' variant="primary" size="lg">Hide</Button>
+                        <Button onClick={ decLimit } className='m-3' variant="primary" size="lg">
+                            Hide
+                        </Button>
                     }
                     {
-                        limit < total - showCars &&
-                        <Button onClick={ incLimit } className='m-3' variant="primary" size="lg">More</Button>
+                        page !== totalPages &&
+                        <Button onClick={ incLimit } className='m-3' variant="primary" size="lg">
+                            More
+                        </Button>
                     }
                 </Container>
+                { totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
             </Container>
             <div ref={ bottomRef }></div>
         </Fragment>

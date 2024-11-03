@@ -8,5 +8,7 @@ export * from './Currency/Currency';
 export * from './Currencies/Currencies';
 export * from './DateFormat/DateFormat'
 export * from './Header/Header';
+export * from './LoginForm/LoginForm';
 export * from './PaginationApp/PaginationApp';
+export * from './RegisterForm/RegisterForm';
 export * from './SearchCar/SearchCar';

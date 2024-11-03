@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { CurrencyEnum } from '../../enums';
-import { ICurrency } from '../../inteerfaces';
+import { ICurrency } from '../../interfaces';
 
 interface IProps {
     currency: ICurrency;

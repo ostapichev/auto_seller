@@ -1,6 +1,6 @@
 import { axiosService } from './axios.service';
 
-import { ICity}  from '../inteerfaces';
+import { ICity}  from '../interfaces';
 import { IRes } from '../types';
 import { urls } from '../constants';
 

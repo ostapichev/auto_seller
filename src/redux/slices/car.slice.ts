@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue } from "@reduxjs/toolkit";
 
-import { IBrand, ICar, IErrorCar, IParams, IQuery } from "../../inteerfaces";
+import { IBrand, ICar, IErrorCar, IParams, IQuery } from "../../interfaces";
 import { carService } from "../../services";
 
 interface IState {
@@ -82,6 +82,12 @@ const slice = createSlice({
         setSearch: (state, action) => {
             state.search = action.payload;
             state.page = 1;
+        },
+        resetParams: state => {
+            state.limit = 2;
+            state.page = 1;
+            state.cityId = null;
+            state.search = null;
         },
     },
     extraReducers: builder => builder

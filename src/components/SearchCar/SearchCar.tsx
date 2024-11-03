@@ -4,7 +4,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import { Button, Form } from 'react-bootstrap';
 
 import { carActions } from '../../redux';
-import { ISearchCar } from '../../inteerfaces';
+import { ISearchCar } from '../../interfaces';
 import { useAppDispatch } from '../../hooks';
 
 const SearchCar: FC = () => {

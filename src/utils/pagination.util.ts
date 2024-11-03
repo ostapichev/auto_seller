@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { IPagination } from '../inteerfaces';
+import { IPagination } from '../interfaces';
 import { IPaginateButtons } from '../types';
 
 export const returnPaginationRange = (dataPagination: IPagination): IPaginateButtons => {
