@@ -60,6 +60,7 @@ const Car: FC<IProps> = memo(({ car }) => {
                     <Card.Img
                         style={{ width: '620px', height: '400px' }}
                         variant="top"
+                        loading="lazy"
                         src={ loading ? empty : photo }
                         alt='car-photo'
                     />

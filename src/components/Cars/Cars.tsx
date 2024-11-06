@@ -119,7 +119,6 @@ const Cars: FC = () => {
                         </Button>
                     }
                 </Container>
-                { totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
             </Container>
             <div ref={ bottomRef }></div>
         </Fragment>
