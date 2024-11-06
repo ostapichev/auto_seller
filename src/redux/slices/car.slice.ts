@@ -12,6 +12,7 @@ interface IState {
     page: number;
     limit: number;
     total: number;
+    totalPages: number;
     showCars: number;
     cityId: string;
     search: string;
@@ -28,6 +29,7 @@ const initialState: IState = {
     page: 1,
     limit: 2,
     total: 0,
+    totalPages: 0,
     showCars: 2,
     cityId: null,
     search: null,
@@ -98,6 +100,7 @@ const slice = createSlice({
             state.cityId = cityId;
             state.search = search;
             state.total = total;
+            state.totalPages = Math.ceil(total / state.limit);
         })
         .addCase(getBrands.fulfilled, (state, action) => {
             state.brands = action.payload;

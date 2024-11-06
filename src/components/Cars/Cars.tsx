@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap';
 import { carActions } from '../../redux';
 import { Car } from '../Car/Car';
 import { Cities } from '../Cities/Cities';
-import { IFuncVoid } from '../../types';
+import { IFuncNumber, IFuncVoid } from '../../types';
 import { IPagination, IParams } from '../../interfaces';
 import { PaginationApp } from '../PaginationApp/PaginationApp';
 import { SearchCar } from '../SearchCar/SearchCar';
@@ -21,12 +21,12 @@ const Cars: FC = () => {
         total,
         page,
         limit,
+        totalPages,
         search,
         showCars,
         cityId,
     } = useAppSelector(state => state.carReducer);
     const [query, setQuery] = useSearchParams();
-    const totalPages = Math.ceil(total / limit);
     const bottomRef = useRef(null);
     const [debounced] = useDebounce<IParams>({
         search: query.get('search'),
@@ -36,8 +36,8 @@ const Cars: FC = () => {
     }, 500);
     const debouncedString = JSON.stringify(debounced);
     const pageChanger = useCallback((value: string): void => {
-        setQuery((prev) => {
-            const newPage = value === '&raquo;' || value === ' ...'
+        setQuery(prev => {
+            const newPage: number = value === '&raquo;' || value === ' ...'
                 ? totalPages
                 : value === '&laquo;' || value === '... '
                     ? 1
@@ -49,22 +49,16 @@ const Cars: FC = () => {
             return { ...prev, page: newPage.toString() };
         });
     }, [setQuery, totalPages]);
+    const getPage: IFuncNumber = (): number => {
+        return Math.ceil(total / limit);
+    };
     const dataPagination: IPagination = {
         totalPages,
-        page,
+        page: page >= totalPages ? getPage() : page,
         siblings: 1,
         limit,
         pageChanger,
     };
-    const changeLimit = useCallback((action: 'increase' | 'decrease'): void => {
-            dispatch(action === 'increase' ? carActions.setLimitInc() : carActions.setLimitDec());
-            if (page >= totalPages) {
-                dispatch(carActions.setPage(totalPages));
-            }
-            setTimeout(() => {
-                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }, 600);
-        }, [dispatch, page, totalPages]);
     const decLimit: IFuncVoid = (): void => {
         dispatch(carActions.setLimitDec());
         setTimeout(() => {
@@ -73,10 +67,9 @@ const Cars: FC = () => {
     };
     const incLimit: IFuncVoid = (): void => {
         dispatch(carActions.setLimitInc());
-        console.log('total pages:', totalPages);
-        console.log('page:', page);
-        console.log((page >= totalPages - 1));
-        if (page >= totalPages) dispatch(carActions.setPage(totalPages));
+        if (page === (cars.length + limit)) {
+            setQuery(prev => ({ ...prev, page: Math.ceil(totalPages / limit) }));
+        }
         setTimeout(() => {
             bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
         }, 800);
@@ -89,7 +82,7 @@ const Cars: FC = () => {
         if (queryString.length) setQuery(`?${queryString.join('&')}`);
     }, [page, setQuery, cityId, search]);
     useEffect(() => {
-        dispatch(carActions.setPage(+query.get('page')));
+        dispatch(carActions.setPage(+query.get('page') || 1));
     }, [dispatch, query]);
     useEffect(() => {
         const params: IParams = JSON.parse(debouncedString);
