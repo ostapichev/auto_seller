@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 import { Col, Container, Nav, Navbar, OffcanvasBody } from 'react-bootstrap';
@@ -9,6 +9,7 @@ import { carActions } from '../../redux'
 import { Currencies } from '../Currencies/Currencies';
 import { IFuncVoid } from '../../types';
 import { LoginForm } from '../LoginForm/LoginForm';
+import { ModalsApp } from '../ModalsApp/ModalsApp';
 import { RegisterForm } from '../RegisterForm/RegisterForm';
 import { useAppDispatch } from '../../hooks';
 
@@ -59,8 +60,9 @@ const Header: FC = () => {
                         onMouseEnter={ () => setHoverReg(true) }
                         onMouseLeave={ () => setHoverReg(false) }
                     >
-                        { hoverReg
-                            ? <i className="bi bi-person fs-3"></i>
+                        {
+                            hoverReg
+                            ? <i className='bi bi-person fs-3'></i>
                             : <i className='bi bi-person-plus-fill fs-3'></i>
                         }
 
@@ -68,12 +70,13 @@ const Header: FC = () => {
                     <Button
                         variant='light'
                         className='m-2'
-                        onClick={handleShowLoginForm}
+                        onClick={ handleShowLoginForm }
                         onMouseEnter={ () => setHoverLogin(true) }
                         onMouseLeave={ () => setHoverLogin(false) }
                     >
-                        { hoverLogin
-                            ? <i className="bi bi-door-open-fill fs-3"></i>
+                        {
+                            hoverLogin
+                            ? <i className='bi bi-door-open-fill fs-3'></i>
                             : <i className='bi bi-door-closed-fill fs-3'></i>
                         }
                     </Button>
@@ -84,7 +87,7 @@ const Header: FC = () => {
                     <Offcanvas.Title>Registration</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    <RegisterForm />
+                    <RegisterForm showForm={ setShowRegistrationForm } />
                 </Offcanvas.Body>
             </Offcanvas>
             <Offcanvas show={showLoginForm} onHide={ closeLoginForm } placement='end'>
@@ -95,6 +98,7 @@ const Header: FC = () => {
                     <LoginForm />
                 </OffcanvasBody>
             </Offcanvas>
+            <ModalsApp />
         </Navbar>
     );
 }

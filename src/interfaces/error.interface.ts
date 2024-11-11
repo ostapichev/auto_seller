@@ -1,3 +1,7 @@
+export interface IErrorAuth {
+    messages?: string[];
+}
+
 export interface IErrorCity {
     name?: string;
 }

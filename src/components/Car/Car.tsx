@@ -1,4 +1,4 @@
-import {FC, memo} from 'react';
+import { FC } from 'react';
 
 import { Card, Col, ListGroup, Placeholder, Row } from 'react-bootstrap';
 
@@ -13,7 +13,7 @@ interface IProps {
     car: ICar;
 }
 
-const Car: FC<IProps> = memo(({ car }) => {
+const Car: FC<IProps> = ({ car }) => {
     const { cities } = useAppSelector(state => state.cityReducer);
     const { brands, loading } = useAppSelector(state => state.carReducer);
     const { currencies } = useAppSelector(state => state.currencyReducer);
@@ -152,7 +152,7 @@ const Car: FC<IProps> = memo(({ car }) => {
             </Row>
         </Card>
     );
-});
+};
 
 export {
     Car

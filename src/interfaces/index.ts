@@ -1,3 +1,4 @@
+export * from './auth.interface';
 export * from './brand.interface';
 export * from './car.interface';
 export * from './city.interface';
@@ -8,4 +9,6 @@ export * from './model.interface';
 export * from './pagination.interface';
 export * from './params.interface';
 export * from './search-car.interface';
+export * from './token.interface';
 export * from './query.interface';
+export * from './user.interface';

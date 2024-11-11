@@ -1,10 +1,20 @@
 const baseURL = 'http://localhost:3500';
+const auth = '/auth';
+const users = '/users';
 const cars = '/cars';
 const brands = '/brands';
 const cities = '/cities';
 const socket = '/socket';
 const currency_course = './currency-course';
 const urls = {
+    authAPI: {
+        signUp: `${auth}/sign-up`,
+        signIn: `${auth}/sign-in`,
+        refresh: `${auth}/refresh`,
+    },
+    usersAPI: {
+        me: `${users}/me`,
+    },
     carsAPI: {
         cars: cars,
         brands: `${cars}${brands}`,

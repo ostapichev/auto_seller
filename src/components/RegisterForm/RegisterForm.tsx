@@ -1,57 +1,117 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
+import { joiResolver } from '@hookform/resolvers/joi';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { FloatingLabel, Form } from 'react-bootstrap';
+import {Alert, FloatingLabel, Form} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
-const RegisterForm: FC = () => {
+import { authActions } from '../../redux';
+import { authValidator } from '../../validators';
+import { getDeviceId } from '../../utils';
+import { IAuth } from '../../interfaces';
+import { useAppDispatch } from '../../hooks';
+
+interface IProps {
+    showForm: Dispatch<SetStateAction<boolean>>;
+}
+
+const RegisterForm: FC<IProps> = ({ showForm }) => {
+    const dispatch = useAppDispatch();
+    const { register, reset, handleSubmit, getValues, formState: { errors, isValid } } = useForm<IAuth>({
+        mode: 'all',
+        resolver: joiResolver(authValidator)
+    });
+    const registerUser: SubmitHandler<IAuth> = async (user: IAuth) => {
+        const deviceId: string = getDeviceId();
+        const { confirmPassword, ...userData } = getValues();
+        const dataUser: IAuth = { ...userData, deviceId };
+        const { meta: { requestStatus } } = await dispatch(authActions.signUp(dataUser));
+        if (requestStatus === 'fulfilled') {
+            dispatch(authActions.setModalShow());
+        }
+        showForm(false);
+        reset();
+    };
+
     return (
-        <Form>
+        <Form onSubmit={ handleSubmit(registerUser) }>
             <FloatingLabel
-                controlId='floatingTextarea'
-                label='Name'
+                controlId='floatingName'
+                label='name'
                 className='mb-3'
             >
-                <Form.Control as='textarea' placeholder='Enter your name' />
+                <Form.Control
+                    as='textarea'
+                    placeholder='enter your name'
+                    {...register('name', { required: true })}
+                />
             </FloatingLabel>
             <FloatingLabel
-                controlId='floatingTextarea'
-                label='Phone'
+                controlId='floatingPhone'
+                label='phone'
                 className='mb-3'
             >
-                <Form.Control as='textarea' placeholder='Enter your phone' />
+                <Form.Control
+                    as='textarea'
+                    placeholder='enter your phone'
+                    {...register('phone', { required: true })}
+                />
             </FloatingLabel>
             <FloatingLabel
-                controlId='floatingInput'
-                label='Email address'
+                controlId='floatingEmail'
+                label='email address'
                 className='mb-3'
             >
-                <Form.Control type='email' placeholder='name@example.com' />
+                <Form.Control
+                    type='email'
+                    placeholder='name@example.com'
+                    {...register('email', { required: true })}
+                />
             </FloatingLabel>
             <FloatingLabel
                 controlId='floatingPassword'
-                label='Enter password'
+                label='enter password'
                 className='mb-3'
             >
-                <Form.Control type='password' placeholder='Enter password' />
+                <Form.Control
+                    type='password'
+                    placeholder='enter password'
+                    {...register('password', { required: true })}
+                />
             </FloatingLabel>
             <FloatingLabel
-                controlId='floatingPassword'
-                label='Enter confirm password'
+                controlId='floatingConfirmPassword'
+                label='enter confirm password'
                 className='mb-3'
             >
-                <Form.Control type='password' placeholder='Confirm password' />
+                <Form.Control
+                    type='password'
+                    placeholder='confirm password'
+                    {...register('confirmPassword', { required: true })}
+                />
             </FloatingLabel>
             <FloatingLabel
                 controlId='floatingSelect'
-                label='Plese choise your gender'
+                label='please choise your gender'
                 className='mb-3'
             >
-                <Form.Select aria-label='Floating label select example'>
+                <Form.Select
+                    aria-label='Floating label select example'
+                    {...register('gender', { required: true })}
+                >
                     <option value='male'>male</option>
                     <option value='female'>female</option>
                 </Form.Select>
             </FloatingLabel>
-            <Button as="input" type='submit' value='Sign up' />
+                {
+                    Object.keys(errors).length > 0
+                        ?
+                        <Alert key='danger' variant='danger'>
+                            { Object.values(errors)[0].message }
+                        </Alert>
+                        :
+                        <Button disabled={ !isValid } as='input' type='submit' value='Sign up' />
+                }
         </Form>
     );
 };

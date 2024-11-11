@@ -9,6 +9,7 @@ export * from './Currencies/Currencies';
 export * from './DateFormat/DateFormat'
 export * from './Header/Header';
 export * from './LoginForm/LoginForm';
+export * from './ModalsApp/ModalsApp';
 export * from './PaginationApp/PaginationApp';
 export * from './RegisterForm/RegisterForm';
 export * from './SearchCar/SearchCar';
