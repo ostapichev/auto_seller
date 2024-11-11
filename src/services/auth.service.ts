@@ -1,21 +1,21 @@
 import { AxiosResponse } from 'axios';
 
 import { axiosService } from './axios.service';
-import { IAuth, ITokens, IUser } from '../interfaces';
+import { IAuth, IAuthResponse, ITokens, IUser } from '../interfaces';
 import { IRes } from '../types';
 import { urls } from '../constants';
 
 class AuthService {
-    private readonly accessKey = 'access';
-    private readonly refreshKey = 'refresh';
+    private readonly accessKey = 'accessToken';
+    private readonly refreshKey = 'refreshToken';
 
-    public register(dataUser: IAuth ): IRes<IUser> {
-        return axiosService.post<IUser>(urls.authAPI.signUp, dataUser);
+    public register(user: IAuth ): IRes<IUser> {
+        return axiosService.post<IUser>(urls.authAPI.signUp, user);
     };
 
     public async login(user: IAuth): Promise<IUser> {
-        const { data }: AxiosResponse = await axiosService.post(urls.authAPI.signIn, user);
-        this.setTokens(data);
+        const { data }: AxiosResponse<IAuthResponse> = await axiosService.post(urls.authAPI.signIn, user);
+        this.setTokens(data.tokens);
         const { data: me }: AxiosResponse<IUser> = await this.me();
         return me;
     };
@@ -48,9 +48,10 @@ class AuthService {
         return localStorage.getItem(this.refreshKey);
     };
 
-    private setTokens({access, refresh}: ITokens): void {
-        localStorage.setItem(this.accessKey, access);
-        localStorage.setItem(this.refreshKey, refresh);
+    private setTokens({accessToken, refreshToken}: ITokens): void {
+        console.log(accessToken);
+        localStorage.setItem(this.accessKey, accessToken);
+        localStorage.setItem(this.refreshKey, refreshToken);
     };
 }
 

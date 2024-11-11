@@ -33,7 +33,6 @@ axiosService.interceptors.response.use(res => {
                 } catch (e) {
                     authService.deleteTokens();
                     isRefreshing = false;
-                    history.replace('/login?expSession=true')
                     return Promise.reject(error);
                 }
             }

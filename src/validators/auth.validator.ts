@@ -25,4 +25,5 @@ export const authValidator = Joi.object({
         'any.only': 'Passwords mismatch!',
     }),
     gender: Joi.string().required(),
+    avatar: Joi.any(),
 });

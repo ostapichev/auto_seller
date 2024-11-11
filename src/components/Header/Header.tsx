@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import {FC, Fragment, useState} from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
@@ -11,12 +11,13 @@ import { IFuncVoid } from '../../types';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { ModalsApp } from '../ModalsApp/ModalsApp';
 import { RegisterForm } from '../RegisterForm/RegisterForm';
-import { useAppDispatch } from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
 import logo from '../../assets/images/logo.jpg';
 
 const Header: FC = () => {
     const dispatch = useAppDispatch();
+    const { me } = useAppSelector(state => state.authReducer);
     const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
     const [hoverReg, setHoverReg] = useState<boolean>(false);
     const [hoverLogin, setHoverLogin] = useState<boolean>(false);
@@ -53,33 +54,55 @@ const Header: FC = () => {
                         </NavLink>
                         <Currencies />
                     </Nav>
-                    <Button
-                        variant='light'
-                        className='m-2'
-                        onClick={ handleShowRegistrationForm }
-                        onMouseEnter={ () => setHoverReg(true) }
-                        onMouseLeave={ () => setHoverReg(false) }
-                    >
-                        {
-                            hoverReg
-                            ? <i className='bi bi-person fs-3'></i>
-                            : <i className='bi bi-person-plus-fill fs-3'></i>
-                        }
+                    { !me ?
+                        <Fragment>
+                            <Button
+                                variant='light'
+                                className='m-2'
+                                onClick={ handleShowRegistrationForm }
+                                onMouseEnter={ () => setHoverReg(true) }
+                                onMouseLeave={ () => setHoverReg(false) }
+                            >
+                                {
+                                    hoverReg
+                                        ? <i className='bi bi-person fs-3'></i>
+                                        : <i className='bi bi-person-plus-fill fs-3'></i>
+                                }
 
-                    </Button>
-                    <Button
-                        variant='light'
-                        className='m-2'
-                        onClick={ handleShowLoginForm }
-                        onMouseEnter={ () => setHoverLogin(true) }
-                        onMouseLeave={ () => setHoverLogin(false) }
-                    >
-                        {
-                            hoverLogin
-                            ? <i className='bi bi-door-open-fill fs-3'></i>
-                            : <i className='bi bi-door-closed-fill fs-3'></i>
-                        }
-                    </Button>
+                            </Button>
+                            <Button
+                                variant='light'
+                                className='m-2'
+                                onClick={ handleShowLoginForm }
+                                onMouseEnter={ () => setHoverLogin(true) }
+                                onMouseLeave={ () => setHoverLogin(false) }
+                            >
+                                {
+                                    hoverLogin
+                                        ? <i className='bi bi-door-open-fill fs-3'></i>
+                                        : <i className='bi bi-door-closed-fill fs-3'></i>
+                                }
+                            </Button>
+                        </Fragment>
+                        :
+                        <Fragment>
+                            { me.name }
+                            <Button
+                                variant='light'
+                                className='m-2'
+                                onClick={ handleShowLoginForm }
+                                onMouseEnter={ () => setHoverLogin(true) }
+                                onMouseLeave={ () => setHoverLogin(false) }
+                            >
+                                {
+                                    hoverLogin
+                                        ? <i className='bi bi-door-closed-fill fs-3'></i>
+                                        : <i className='bi bi-door-open-fill fs-3'></i>
+                                }
+                            </Button>
+                        </Fragment>
+
+                    }
                 </Navbar.Collapse>
             </Container>
             <Offcanvas show={ showRegistrationForm } onHide={ closeRegistrationForm } placement='end'>
@@ -90,12 +113,12 @@ const Header: FC = () => {
                     <RegisterForm showForm={ setShowRegistrationForm } />
                 </Offcanvas.Body>
             </Offcanvas>
-            <Offcanvas show={showLoginForm} onHide={ closeLoginForm } placement='end'>
+            <Offcanvas show={ showLoginForm } onHide={ closeLoginForm } placement='end'>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Login</Offcanvas.Title>
                 </Offcanvas.Header>
                 <OffcanvasBody>
-                    <LoginForm />
+                    <LoginForm showForm={ setShowLoginForm } />
                 </OffcanvasBody>
             </Offcanvas>
             <ModalsApp />

@@ -26,9 +26,7 @@ const RegisterForm: FC<IProps> = ({ showForm }) => {
         const { confirmPassword, ...userData } = getValues();
         const dataUser: IAuth = { ...userData, deviceId };
         const { meta: { requestStatus } } = await dispatch(authActions.signUp(dataUser));
-        if (requestStatus === 'fulfilled') {
-            dispatch(authActions.setModalShow());
-        }
+        if (requestStatus === 'fulfilled') dispatch(authActions.setModalShow());
         showForm(false);
         reset();
     };
