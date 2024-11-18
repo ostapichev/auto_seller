@@ -2,14 +2,15 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import {Alert, FloatingLabel, Form} from 'react-bootstrap';
+import { Alert, FloatingLabel, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
 import { authActions } from '../../redux';
-import { authValidator } from '../../validators';
+import { registrationValidator } from '../../validators';
 import { getDeviceId } from '../../utils';
+import { GenderEnum } from '../../enums';
 import { IAuth } from '../../interfaces';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 interface IProps {
     showForm: Dispatch<SetStateAction<boolean>>;
@@ -17,17 +18,20 @@ interface IProps {
 
 const RegisterForm: FC<IProps> = ({ showForm }) => {
     const dispatch = useAppDispatch();
+    const { loading, errorAuth } = useAppSelector(state => state.authReducer);
     const { register, reset, handleSubmit, getValues, formState: { errors, isValid } } = useForm<IAuth>({
-        mode: 'all',
-        resolver: joiResolver(authValidator)
+        mode: 'onSubmit',
+        resolver: joiResolver(registrationValidator)
     });
     const registerUser: SubmitHandler<IAuth> = async (user: IAuth) => {
         const deviceId: string = getDeviceId();
         const { confirmPassword, ...userData } = getValues();
         const dataUser: IAuth = { ...userData, deviceId };
         const { meta: { requestStatus } } = await dispatch(authActions.signUp(dataUser));
-        if (requestStatus === 'fulfilled') dispatch(authActions.setModalShow());
-        showForm(false);
+        if (requestStatus === 'fulfilled') {
+            dispatch(authActions.setModalShow());
+            showForm(false);
+        }
         reset();
     };
 
@@ -90,26 +94,28 @@ const RegisterForm: FC<IProps> = ({ showForm }) => {
             </FloatingLabel>
             <FloatingLabel
                 controlId='floatingSelect'
-                label='please choise your gender'
+                label='please choose your gender'
                 className='mb-3'
             >
                 <Form.Select
                     aria-label='Floating label select example'
                     {...register('gender', { required: true })}
                 >
-                    <option value='male'>male</option>
-                    <option value='female'>female</option>
+                    <option value={ GenderEnum.MALE }>{ GenderEnum.MALE }</option>
+                    <option value={ GenderEnum.FEMALE }>{ GenderEnum.FEMALE }</option>
                 </Form.Select>
             </FloatingLabel>
-                {
-                    Object.keys(errors).length > 0
-                        ?
-                        <Alert key='danger' variant='danger'>
-                            { Object.values(errors)[0].message }
-                        </Alert>
-                        :
-                        <Button disabled={ !isValid } as='input' type='submit' value='Sign up' />
-                }
+            {
+                Object.keys(errors).length > 0
+                    ? <Alert key='danger' variant='danger'>{ Object.values(errors)[0].message }</Alert>
+                    : <Button disabled={ !isValid || loading } as='input' type='submit' value='Sign up' />
+            }
+            {
+                errorAuth?.messages &&
+                    <Alert key='danger' variant='danger' className='mt-3'>
+                        { errorAuth.messages }
+                    </Alert>
+            }
         </Form>
     );
 };

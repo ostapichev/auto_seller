@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { createAsyncThunk, createSlice, isFulfilled, isRejectedWithValue } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue}  from '@reduxjs/toolkit';
 
 import { authService } from '../../services';
 import { IAuth, IErrorAuth, IUser } from '../../interfaces';
@@ -7,12 +7,14 @@ import { IAuth, IErrorAuth, IUser } from '../../interfaces';
 interface IState {
     showModal: boolean;
     me: IUser;
+    loading: boolean;
     errorAuth: IErrorAuth;
 }
 
 const initialState: IState = {
     showModal: false,
     me: null,
+    loading: false,
     errorAuth: null,
 };
 
@@ -40,6 +42,18 @@ const signIn = createAsyncThunk<IUser, IAuth>(
     }
 );
 
+const signOut = createAsyncThunk<void, void>(
+    'authSlice/signOut',
+    async (_, { rejectWithValue }) => {
+        try {
+            await authService.logout();
+        } catch (e) {
+            const err = e as AxiosError;
+            return rejectWithValue(err.response.data);
+        }
+    }
+);
+
 const me = createAsyncThunk<IUser, void>(
     'authSlice/me',
     async () => {
@@ -52,16 +66,17 @@ const slice = createSlice({
     name: 'authSlice',
     initialState,
     reducers: {
-        logout: state => {
-            state.me = null;
-        },
         setModalShow: state => {
             state.showModal = true;
         },
         setModalHide: state => {
             state.showModal = false;
             state.errorAuth = null;
-        }
+        },
+        logout: state => {
+            state.me = null;
+            state.loading = false;
+        },
     },
     extraReducers: builder =>
         builder
@@ -73,8 +88,14 @@ const slice = createSlice({
             })
             .addMatcher(isFulfilled, state => {
                 state.errorAuth = null;
+                state.loading = false;
+            })
+            .addMatcher(isPending, state => {
+                state.loading = true;
+                state.errorAuth = null;
             })
             .addMatcher(isRejectedWithValue(), (state, action) => {
+                state.loading = false;
                 state.errorAuth = action.payload as IErrorAuth;
             })
 });
@@ -84,6 +105,7 @@ const authActions = {
     ...actions,
     signUp,
     signIn,
+    signOut,
     me,
 };
 

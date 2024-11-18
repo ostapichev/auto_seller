@@ -1,6 +1,6 @@
-import Joi from "joi";
+import Joi from 'joi';
 
-export const authValidator = Joi.object({
+export const registrationValidator = Joi.object({
     name: Joi.string().regex(/^[a-zA-Z]\w{1,19}$/)
         .messages({
             'string.pattern.base': 'Username must start with letter, and consists with letters, numbers or _. ' +

@@ -16,6 +16,9 @@ const router = createBrowserRouter([
                 path: 'cars', element: <CarsPage />
             },
             {
+                path: ':email', element: <CarsPage />
+            },
+            {
                 path: 'admin', element: <AdminPage />
             },
             {

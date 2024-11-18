@@ -8,21 +8,21 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const ModalsApp: FC = () => {
     const dispatch = useAppDispatch();
-    const { showModal, errorAuth } = useAppSelector(state => state.authReducer);
+    const { showModal } = useAppSelector(state => state.authReducer);
     const handleClose = () => dispatch(authActions.setModalHide());
 
     return (
         <Fragment>
             <Modal
-                show={ !!showModal || !!errorAuth }
+                show={ showModal }
                 onHide={ handleClose }
                 backdrop='static'
                 keyboard={ false }
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>{ showModal ? 'SUCCESS' : 'ERROR' }</Modal.Title>
+                    <Modal.Title>SUCCESS</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{ showModal ? 'Registration successful! Check your email!' : errorAuth?.messages }</Modal.Body>
+                <Modal.Body>Registration successful! Check your email!</Modal.Body>
                 <Modal.Footer>
                     <Button onClick={ handleClose } variant='primary'>Understood</Button>
                 </Modal.Footer>

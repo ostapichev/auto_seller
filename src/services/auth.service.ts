@@ -20,6 +20,11 @@ class AuthService {
         return me;
     };
 
+    public async logout(): Promise<void> {
+        this.deleteTokens();
+        await axiosService.post(urls.authAPI.signOut);
+    };
+
     public me(): IRes<IUser>{
         return axiosService.get<IUser>(urls.usersAPI.me);
     };

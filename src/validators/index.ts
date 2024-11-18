@@ -1,1 +1,2 @@
-export * from './auth.validator';
+export * from './login.validator';
+export * from './registration.validator';

@@ -96,8 +96,8 @@ const Cars: FC = () => {
         <Fragment>
             <Container style={{ marginTop: '150px' }}>
                 <Container className='d-flex justify-content-between' fluid>
-                    <Cities/>
-                    <SearchCar/>
+                    <Cities />
+                    <SearchCar />
                 </Container>
                 { totalPages > 1 && <PaginationApp dataPagination={ dataPagination } /> }
                 <Container>

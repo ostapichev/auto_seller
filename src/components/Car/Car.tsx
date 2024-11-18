@@ -54,13 +54,13 @@ const Car: FC<IProps> = ({ car }) => {
     const brandName: string[] = getBrandName(brand, model);
     
     return (
-        <Card border='dark' className="w-100 mb-4">
+        <Card border='dark' className='w-100 mb-4'>
             <Row>
                 <Col xs={6}>
                     <Card.Img
                         style={{ width: '620px', height: '400px' }}
-                        variant="top"
-                        loading="lazy"
+                        variant='top'
+                        loading='lazy'
                         src={ loading ? empty : photo }
                         alt='car-photo'
                     />
@@ -69,10 +69,10 @@ const Car: FC<IProps> = ({ car }) => {
                     {
                         loading ?
                         <Card.Body>
-                            <Placeholder as={ Card.Title } animation="glow">
+                            <Placeholder as={ Card.Title } animation='glow'>
                                 <Placeholder className='fs-1 mt-2' xs={6} />
                             </Placeholder>
-                            <Placeholder as={ Card.Text } animation="glow" className='fs-1'>
+                            <Placeholder as={ Card.Text } animation='glow' className='fs-1'>
                                 <Placeholder xs={7} /> <Placeholder xs={4} />
                             </Placeholder>
                                 <Placeholder as={ Card.Text } animation="glow" className='fs-4'>
